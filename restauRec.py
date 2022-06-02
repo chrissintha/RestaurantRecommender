@@ -85,7 +85,8 @@ most_popular1 = city_based_recommender(matrix1.copy(),city)
 mostPopular1 = most_popular1.filter(['name','city','Rcuisine'])
 st.table(mostPopular1)
 
-col1, col2, col3 = st.columns(3)
+# col1, col2, col3 = st.columns(3)
+col1, col2,  col3 = st.beta_columns([6,1])
 
 with col1:
     st.subheader("Rating Based : ")
