@@ -293,18 +293,42 @@ def get_sparse_matrix(newdf1: pd.DataFrame):
         .pivot(index='userID', columns='name', values='rating')
     )
 
+  
+  
+  
+newdataf= (
+    matrix1
+    .filter(['userID', 'name', 'city','rating','Rcuisine'])
+    .groupby(['userID'])
+    .head(5))
+(newdataf
+    .groupby(['userID'])
+    .agg(
+        mean_rating = ('rating', 'mean'),
+        count_rating = ('rating', 'count')
+    )
+    .reset_index()
+    .sort_values('mean_rating', ascending=False))
+newdataf1 = newdataf.drop_duplicates()
+newdataf1.pivot(index='userID', columns=('name','Rcuisine'), values='rating')
+def get_sparse_matrix(newdataf1: pd.DataFrame): 
+
+    return(
+    newdataf1
+        .pivot(index='userID', columns=('name','Rcuisine'), values='rating')
+    )
+  
 # py function item based recommender
 st.write("""
 ### Select Restaurant of Choice : 
  
 """)
-#City based Recommendation
 name = st.selectbox(
     ' ',
      (new_final_df1['name'].unique()))
 
 def item_based_recommender(dense_matrix: pd.DataFrame, name: str, n: int=5): # n=6, minimum number of ratings
-    sparse_matrix = get_sparse_matrix(newdf1)
+    sparse_matrix = get_sparse_matrix(newdataf1)
     return(
     sparse_matrix
         .corrwith(sparse_matrix[name])
@@ -323,7 +347,7 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 st.write(name)
 st.write("Beacuse you liked "+ name +" you may also like :")
-most_popular_item = item_based_recommender(newdf1,name)
+most_popular_item = item_based_recommender(newdataf1,name)
 st.table(most_popular_item)
 
 
