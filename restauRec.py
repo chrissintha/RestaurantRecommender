@@ -261,3 +261,58 @@ with col3:
     most_popular1 = cityCuisine_based_recommender(new_final_df1.copy(),city,Rcuisine)
     mostPopular1 = most_popular1.filter(['name','Restaurant_information','price'])
     st.table(mostPopular1)
+    
+
+newdf_m= (
+    new_final_df1
+    .filter(['userID', 'name', 'city','rating'])
+    .groupby(['userID'])
+    .head(5))
+(newdf_m
+    .groupby(['userID'])
+    .agg(
+        mean_rating = ('rating', 'mean'),
+        count_rating = ('rating', 'count')
+    )
+    .reset_index()
+    .sort_values('mean_rating', ascending=False))
+newdf1 = newdf_m.drop_duplicates()
+newdf1.pivot(index='userID', columns='name', values='rating')
+def get_sparse_matrix(newdf1: pd.DataFrame): 
+
+    return(
+    newdf1
+        .pivot(index='userID', columns='name', values='rating')
+    )
+
+# py function item based recommender
+st.write("""
+### Select Restaurant of Choice : 
+ 
+""")
+#City based Recommendation
+name = st.selectbox(
+    ' ',
+     (new_final_df1['name'].unique()))
+
+def item_based_recommender(dense_matrix: pd.DataFrame, name: str, n: int=5): # n=6, minimum number of ratings
+    sparse_matrix = get_sparse_matrix(newdf1)
+    return(
+    sparse_matrix
+        .corrwith(sparse_matrix[name])
+        .sort_values(ascending=False)
+        .index
+        .to_list()[1:n+1]
+    )
+
+hide_table_row_index = """
+        <style>
+        tbody th {display:none}
+        .blank {display:none}
+        </style>
+        """
+    # Inject CSS with Markdown
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
+most_popular = item_based_recommender(newdf1,name)
+st.write("Beacuse you liked "+ name +" you may also like :")
+st.table(most_popular)
