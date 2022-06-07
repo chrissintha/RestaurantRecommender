@@ -313,6 +313,7 @@ hide_table_row_index = """
         """
     # Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
+st.write(name)
 most_popular = item_based_recommender(newdf1,name)
 st.write("Beacuse you liked "+ name +" you may also like :")
 st.table(most_popular)
@@ -346,11 +347,11 @@ most_popular = get_user_prefered_item(newdf1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
-st.write("Beacuse you enjoyed "+ most_popular[1] +" you may also like :")
-st.write("Recommended for you:")
+st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
+#st.write("Recommended for you:")
 pref_item = get_user_prefered_item(newdf1, userID)
-res_preferred = item_based_recommender(newdf1, pref_item[1])
-st.table(res_preferred)
+res_preferred = item_based_recommender(newdf1, pref_item[0])
+#st.table(res_preferred)
 for i in res_preferred:
     if pref_item[0] != i:
         st.write( i+", ", end=" ")
