@@ -352,7 +352,7 @@ st.write("""
 ### Select UserID : 
  
 """)
-#City based Recommendation
+#User based Recommendation
 userID = st.selectbox(
     ' ',
      (new_final_df1['userID'].unique()))
@@ -376,7 +376,6 @@ most_popular = get_user_prefered_item(new_final_df1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
-st.write("Recommended for you:")
 def get_user_recommendation(user_final: pd.DataFrame, userID_x: str):
     data=user_final.copy()
     return(data
@@ -393,5 +392,5 @@ hide_table_row_index = """
     # Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 recommened_user = get_user_recommendation(user_final,userID)
-st.write("Restaurants you like : ")
+st.write("Recommended Restaurants  : ")
 st.table(recommened_user)
