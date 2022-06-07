@@ -155,8 +155,7 @@ with col5:
     st.map(data=city_map1, zoom=11, use_container_width=True)
     
     
-    
- col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 def _max_width_(prcnt_width:int = 75):
     max_width_str = f"max-width: {prcnt_width}%;"     
         
