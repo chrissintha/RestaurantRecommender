@@ -79,6 +79,10 @@ new_final_df= final_df.drop_duplicates()
 new_final_df1= new_final_df.drop_duplicates(subset=['Restaurant_information'])
 user_final =pd.merge(user_f,new_final_df1,how = 'inner',on=["placeID"] )
 
+matrix = pd.merge(rating_final,geoplaces2, how ="inner", on = ["placeID"])
+matrix1 = pd.merge(matrix,chefmozcuisine, how ="inner", on = ["placeID"])
+# modify values : Make the data in all cities to lowecase
+matrix1["city"] = matrix1["city"].map(lambda x: x.lower())
 
 def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: float):
     
@@ -281,6 +285,7 @@ newdf_m= (
     .sort_values('mean_rating', ascending=False))
 newdf1 = newdf_m.drop_duplicates()
 newdf1.pivot(index='userID', columns='name', values='rating')
+
 def get_sparse_matrix(newdf1: pd.DataFrame): 
 
     return(
@@ -346,7 +351,7 @@ hide_table_row_index = """
         """
     # Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
-most_popular = get_user_prefered_item(newdf1,userID)
+most_popular = get_user_prefered_item(new_final_df1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
