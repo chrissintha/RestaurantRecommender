@@ -60,7 +60,7 @@ st.write("""
 ### Best restaurants 
  
 """)
- final_df["city"] = final_df["city"].map(lambda x: x.lower())
+final_df["city"] = final_df["city"].map(lambda x: x.lower())
 final_df['city'].replace(['?'],final_df['city'].mode(), inplace=True)
 final_df['url'].replace(['?'],'No Details', inplace=True)
 final_df['address'].replace(['?'],'No Details', inplace=True)
@@ -74,7 +74,6 @@ final_df['Restaurant_information'] ='Address: ' +final_df['address']+ ', City: '
 final_df['Additional_information'] =' Price: ' + final_df['price']+ ', Payment Method: ' + final_df['Rpayment']+', Parking_lot :'+final_df['parking_lot']+', days_open : '+final_df['days']+' , Hours : '+final_df['hours']
 new_final_df= final_df.drop_duplicates()
 new_final_df1= new_final_df.drop_duplicates(subset=['Restaurant_information'])
-
 
 def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: float):
     
