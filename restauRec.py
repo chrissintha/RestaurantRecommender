@@ -153,4 +153,112 @@ with col5:
             )
     city_map1=city_map(geoplaces2.copy(),city)
     st.map(data=city_map1, zoom=11, use_container_width=True)
+    
+    
+    
+ col1, col2, col3 = st.columns(3)
+def _max_width_(prcnt_width:int = 75):
+    max_width_str = f"max-width: {prcnt_width}%;"     
+        
+with col1:
+    st.subheader("Rating Based : ")
+    #select Rating for city
+    rating = st.selectbox(
+        ' ',
+         (new_final_df1['rating'].unique()))
+    def cityRating_based_recommender(new_final_df1: pd.DataFrame, city: str, rating: int):
+    
+        return (
+            new_final_df1
+        
+            .query('city == @city')
+            .query('rating == @rating')
+            .groupby(['city', 'name','rating'])
+            .agg(
+           
+                rating_mean = ('rating', 'mean'),
+                rating_count = ('rating', 'count')
+            )
+            .sort_values(['rating_count'], ascending=False)
+            .reset_index()
+            .head(5)
+            )
+    hide_table_row_index = """
+            <style>
+            tbody th {display:none}
+            .blank {display:none}
+            .reportview-container .main .block-container{{{_max_width_}}}
+            </style>
+            """
+# Inject CSS with Markdown
+    st.markdown( hide_table_row_index, unsafe_allow_html=True)
+    most_popular1 = cityRating_based_recommender(new_final_df1.copy(),city,rating)
+    mostPopular1 = most_popular1.filter(['name','city','Rcuisine','rating'])
+    st.table(mostPopular1)
 
+with col2:
+    st.subheader("Price Range Based :")
+    #City and Price based recommendation
+    price = st.selectbox(
+        ' ',
+         (new_final_df1['price'].unique()))
+    def cityPrice_based_recommender(new_final_df1: pd.DataFrame, city: str, price: str):
+    
+        return (
+            new_final_df1
+            .query('city == @city')
+            .query('price == @price')
+            .groupby(['city', 'name','price'])
+            .agg(
+           
+                rating = ('rating', 'count')
+            )
+            .sort_values(['rating'], ascending=False)
+            .reset_index()
+            .head(5)
+            )
+    hide_table_row_index = """
+            <style>
+            tbody th {display:none}
+            .blank {display:none}
+            </style>
+            """
+# Inject CSS with Markdown
+    st.markdown(hide_table_row_index, unsafe_allow_html=True)
+    most_popular1 = cityPrice_based_recommender(new_final_df1.copy(),city,price)
+    mostPopular1 = most_popular1.filter(['name','city','price'])
+    st.table(mostPopular1)
+
+with col3:
+    st.subheader("Cuisine based :")
+#City and Cuisine based recommender
+    Rcuisine = st.selectbox(
+        ' ',
+         (new_final_df1['Rcuisine'].unique()))
+
+    def cityCuisine_based_recommender(new_final_df1: pd.DataFrame, city: str, Rcuisine: str):
+    
+        return (
+            new_final_df1
+            .query('city == @city')
+            .query('Rcuisine == @Rcuisine')
+            .groupby(['city', 'name','Rcuisine'])
+            .agg(
+           
+                rating = ('rating', 'count')
+            )
+            .sort_values(['rating'], ascending=False)
+            .reset_index()
+            .head(5)
+            )
+    hide_table_row_index = """
+            <style>
+            tbody th {display:none}
+            .blank {display:none}
+            </style>
+            """
+# Inject CSS with Markdown
+    st.markdown(hide_table_row_index, unsafe_allow_html=True)
+    most_popular1 = cityCuisine_based_recommender(new_final_df1.copy(),city,Rcuisine)
+    mostPopular1 = most_popular1.filter(['name','city','price'])
+    st.table(mostPopular1)
