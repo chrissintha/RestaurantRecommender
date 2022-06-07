@@ -265,7 +265,7 @@ with col3:
 
 newdf_m= (
     new_final_df1
-    .filter(['userID', 'name', 'city','rating','Restaurant_information'])
+    .filter(['userID', 'name', 'city','rating'])
     .groupby(['userID'])
     .head(5))
 (newdf_m
@@ -277,12 +277,12 @@ newdf_m= (
     .reset_index()
     .sort_values('mean_rating', ascending=False))
 newdf1 = newdf_m.drop_duplicates()
-newdf1.pivot(index='userID', columns=('name','Restaurant_information'), values='rating')
+newdf1.pivot(index='userID', columns=('name'), values='rating')
 def get_sparse_matrix(newdf1: pd.DataFrame): 
 
     return(
     newdf1
-        .pivot(index='userID', columns=('name','Restaurant_information'), values='rating')
+        .pivot(index='userID', columns='name', values='rating')
     )
 
 # py function item based recommender
@@ -352,6 +352,6 @@ pref_item = get_user_prefered_item(newdf1, userID)
 st.write(pref_item[1])
 res_preferred = item_based_recommender(newdf1, pref_item[1])
 st.table(res_preferred)
-#for i in res_preferred:
- #   if pref_item[0] != i:
-  #      st.write( i+", ", end=" ")
+for i in res_preferred:
+    if pref_item[0] != i:
+        st.write( i+", ", end=" ")
