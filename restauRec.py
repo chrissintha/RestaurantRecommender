@@ -265,7 +265,7 @@ with col3:
 
 newdf_m= (
     new_final_df1
-    .filter(['userID', 'name', 'city','rating','Additional_information'])
+    .filter(['userID', 'name', 'city','rating','Restaurant_information'])
     .groupby(['userID'])
     .head(5))
 (newdf_m
