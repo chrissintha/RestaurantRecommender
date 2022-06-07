@@ -51,5 +51,14 @@ from PIL import Image
 image = Image.open('image_restaurant.jpg')
 
 st.image(image)
+
+
+geo_data = geoplaces2.filter(['latitude','longitude'])
+st.map(data=geo_data, zoom=5, use_container_width=True)
+    
+st.write("""
+### Best restaurants 
+ 
+""")
     
 
