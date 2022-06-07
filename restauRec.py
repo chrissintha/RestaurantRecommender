@@ -380,7 +380,6 @@ def get_user_recommendation(user_final: pd.DataFrame, userID_x: str):
     data=user_final.copy()
     return(data
     .query('userID_x == @userID_x') 
-    .filter(['city','name','Restaurant_information'])
     .sort_values('rating', ascending=False)
     ['name'].to_list()[:5]
     )
