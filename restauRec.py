@@ -316,3 +316,39 @@ st.markdown(hide_table_row_index, unsafe_allow_html=True)
 most_popular = item_based_recommender(newdf1,name)
 st.write("Beacuse you liked "+ name +" you may also like :")
 st.table(most_popular)
+
+
+st.write("""
+### Select UserID : 
+ 
+""")
+#City based Recommendation
+userID = st.selectbox(
+    ' ',
+     (new_final_df1['userID'].unique()))
+
+def get_user_prefered_item(new_final_df1: pd.DataFrame, userID: str):
+    data=new_final_df1.copy()
+    return(data
+    .query('userID == @userID') 
+    .sort_values('rating', ascending=False)
+    ['name'].to_list()[:3]
+    )
+hide_table_row_index = """
+        <style>
+        tbody th {display:none}
+        .blank {display:none}
+        </style>
+        """
+    # Inject CSS with Markdown
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
+most_popular = get_user_prefered_item(newdf1,userID)
+st.write("Restaurants you like : ")
+st.table(most_popular)
+
+st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
+pref_item = get_user_prefered_item(newdf1, userID)
+res_preferred = item_based_recommender(newdf1, pref_item[0])
+for i in res_preferred:
+    if pref_item[0] != i:
+        st.write( i+", ", end=" ")
