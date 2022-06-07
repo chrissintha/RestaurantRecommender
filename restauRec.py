@@ -102,3 +102,53 @@ most_popular = popularity_based_recommender(new_final_df1.copy(),1.7)
 mostPopular = most_popular.filter(['name','Restaurant_information','Additional_information'])
 st.table(mostPopular)
 
+
+st.write("""
+    ### Select City of Choice : 
+
+    """)
+    #City based Recommendation
+city = st.selectbox(
+        ' ',
+         (new_final_df1['city'].unique()))
+col4, col5 = st.columns(2)
+def _max_width_(prcnt_width:int = 75):
+    max_width_str = f"max-width: {prcnt_width}%;"
+    
+
+with col4:
+    def city_based_recommender(new_final_df1: pd.DataFrame, city: str):
+        return (
+            new_final_df1
+            .groupby(['city', 'name','Additional_information'])
+            .agg(
+            rating_mean = ('rating', 'mean'),
+            rating_count = ('rating', 'count')
+        )
+        .reset_index()
+        .sort_values(['rating_count'], ascending=False)
+        .query('city == @city & rating_mean >= 0')
+        .head(5)
+         )
+    hide_table_row_index = """
+        <style>
+         tbody th {display:none}
+        .blank {display:none}
+        </style>
+        """
+  # Inject CSS with Markdown
+  st.markdown(hide_table_row_index, unsafe_allow_html=True)
+  most_popular1 = city_based_recommender(new_final_df1.copy(),city)
+  mostPopular1 = most_popular1.filter(['name','city','Additional_information'])
+  st.table(mostPopular1)
+with col5:
+    def city_map(geoplaces2: pd.DataFrame, city: str):
+        st.write(city)
+        return(
+            geoplaces2
+               .query('city == @city')
+               .filter(['latitude','longitude'])
+            )
+    city_map1=city_map(geoplaces2.copy(),city)
+    st.map(data=city_map1, zoom=11, use_container_width=True)
+
