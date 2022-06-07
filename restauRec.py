@@ -137,10 +137,10 @@ with col4:
         </style>
         """
   # Inject CSS with Markdown
-  st.markdown(hide_table_row_index, unsafe_allow_html=True)
-  most_popular1 = city_based_recommender(new_final_df1.copy(),city)
-  mostPopular1 = most_popular1.filter(['name','city','Additional_information'])
-  st.table(mostPopular1)
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
+most_popular1 = city_based_recommender(new_final_df1.copy(),city)
+mostPopular1 = most_popular1.filter(['name','city','Additional_information'])
+st.table(mostPopular1)
 with col5:
     def city_map(geoplaces2: pd.DataFrame, city: str):
         st.write(city)
@@ -149,6 +149,6 @@ with col5:
                .query('city == @city')
                .filter(['latitude','longitude'])
             )
-    city_map1=city_map(geoplaces2.copy(),city)
-    st.map(data=city_map1, zoom=11, use_container_width=True)
+        city_map1=city_map(geoplaces2.copy(),city)
+st.map(data=city_map1, zoom=11, use_container_width=True)
 
