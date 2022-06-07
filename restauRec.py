@@ -71,6 +71,7 @@ final_df['price'].replace(['?'],final_df['price'].mode(), inplace=True)
 final_df['Rpayment'].replace(['?'],final_df['Rpayment'].mode(), inplace=True)
 final_df['parking_lot'].replace(['?'],final_df['parking_lot'].mode(), inplace=True)
 final_df["city"].replace({"s.l.p": "san luis potosi", "s.l.p.": "san luis potosi","san luis potos": "san luis potosi","san luis potosi ": "san luis potosi"}, inplace=True)
+final_df["city"].replace({"victoria ": "victoria", "cd victoria": "victoria","cuidad victoria": "victoria","cd. victoria ": "victoria"}, inplace=True)
 final_df['Restaurant_information'] ='Address: ' +final_df['address']+ ', City: ' + final_df['city']+', Cuisine: ' +final_df['Rcuisine']
 final_df['Additional_information'] =' Price: ' + final_df['price']+ ', Payment Method: ' + final_df['Rpayment']+', Parking_lot :'+final_df['parking_lot']+', days_open : '+final_df['days']+' , Hours : '+final_df['hours']
 new_final_df= final_df.drop_duplicates()
