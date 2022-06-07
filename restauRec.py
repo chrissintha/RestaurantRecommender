@@ -10,7 +10,8 @@ rating_final=pd.read_csv('rating_final.csv')
 usercuisine=pd.read_csv('usercuisine.csv')
 userpayment=pd.read_csv('userpayment.csv')
 userprofile=pd.read_csv('userprofile.csv')
-import pandas as pd
+user_f = pd.read_csv('user_f.csv')
+
 from functools import reduce
 
 #define list of DataFrames
@@ -76,6 +77,8 @@ final_df['Restaurant_information'] ='Address: ' +final_df['address']+ ', City: '
 final_df['Additional_information'] =' Price: ' + final_df['price']+ ', Payment Method: ' + final_df['Rpayment']+', Parking_lot :'+final_df['parking_lot']+', days_open : '+final_df['days']+' , Hours : '+final_df['hours']
 new_final_df= final_df.drop_duplicates()
 new_final_df1= new_final_df.drop_duplicates(subset=['Restaurant_information'])
+user_final =pd.merge(user_f,new_final_df1,how = 'inner',on=["placeID"] )
+
 
 def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: float):
     
@@ -347,11 +350,22 @@ most_popular = get_user_prefered_item(newdf1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
-st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
-#st.write("Recommended for you:")
-pref_item = get_user_prefered_item(newdf1, userID)
-res_preferred = item_based_recommender(newdf1, pref_item[0])
-#st.table(res_preferred)
-for i in res_preferred:
-    if pref_item[0] != i:
-        st.write( i+", ", end=" ")
+st.write("Recommended for you:")
+def get_user_recommendation(user_final: pd.DataFrame, userID_x: str):
+    data=user_final.copy()
+    return(data
+    .query('userID_x == @userID_x') 
+    .sort_values('rating', ascending=False)
+    ['name'].to_list()[:5]
+    )
+hide_table_row_index = """
+        <style>
+        tbody th {display:none}
+        .blank {display:none}
+        </style>
+        """
+    # Inject CSS with Markdown
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
+recommened_user = get_user_recommendation(user_final,userID)
+st.write("Restaurants you like : ")
+st.table(recommened_user)
