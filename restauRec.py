@@ -90,7 +90,7 @@ def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: flo
         .query('rating_mean >= @min_n_ratings')
         .head(5)
         )
- hide_table_row_index = """
+hide_table_row_index = """
        <style>
        tbody th {display:none}
        .blank {display:none}
