@@ -277,12 +277,12 @@ newdf_m= (
     .reset_index()
     .sort_values('mean_rating', ascending=False))
 newdf1 = newdf_m.drop_duplicates()
-newdf1.pivot(index='userID', columns=('name','Additional_information'), values='rating')
+newdf1.pivot(index='userID', columns=('name','Restaurant_information'), values='rating')
 def get_sparse_matrix(newdf1: pd.DataFrame): 
 
     return(
     newdf1
-        .pivot(index='userID', columns=('name','Additional_information'), values='rating')
+        .pivot(index='userID', columns=('name','Restaurant_information'), values='rating')
     )
 
 # py function item based recommender
