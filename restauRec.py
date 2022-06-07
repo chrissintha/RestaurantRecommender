@@ -277,7 +277,7 @@ newdf_m= (
     .reset_index()
     .sort_values('mean_rating', ascending=False))
 newdf1 = newdf_m.drop_duplicates()
-newdf1.pivot(index='userID', columns=('name'), values='rating')
+newdf1.pivot(index='userID', columns='name', values='rating')
 def get_sparse_matrix(newdf1: pd.DataFrame): 
 
     return(
@@ -346,10 +346,9 @@ most_popular = get_user_prefered_item(newdf1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
-#st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
+st.write("Beacuse you enjoyed "+ most_popular[1] +" you may also like :")
 st.write("Recommended for you:")
 pref_item = get_user_prefered_item(newdf1, userID)
-st.write(pref_item[1])
 res_preferred = item_based_recommender(newdf1, pref_item[1])
 st.table(res_preferred)
 for i in res_preferred:
