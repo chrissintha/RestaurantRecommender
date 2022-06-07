@@ -301,7 +301,6 @@ def item_based_recommender(dense_matrix: pd.DataFrame, name: str, n: int=5): # n
     sparse_matrix
         .corrwith(sparse_matrix[name])
         .sort_values(ascending=False)
-        .groupby(['Restaurant_information'])
         .index
         .to_list()[1:n+1]
     )
