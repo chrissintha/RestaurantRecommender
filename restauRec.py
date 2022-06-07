@@ -172,7 +172,7 @@ with col1:
         
             .query('city == @city')
             .query('rating == @rating')
-            .groupby(['city', 'name','rating'])
+            .groupby(['city', 'name','rating','Restaurant_information'])
             .agg(
            
                 rating_mean = ('rating', 'mean'),
@@ -192,7 +192,7 @@ with col1:
 # Inject CSS with Markdown
     st.markdown( hide_table_row_index, unsafe_allow_html=True)
     most_popular1 = cityRating_based_recommender(new_final_df1.copy(),city,rating)
-    mostPopular1 = most_popular1.filter(['name','city','Rcuisine','rating'])
+    mostPopular1 = most_popular1.filter(['name','Restaurant_information','rating'])
     st.table(mostPopular1)
 
 with col2:
@@ -207,7 +207,7 @@ with col2:
             new_final_df1
             .query('city == @city')
             .query('price == @price')
-            .groupby(['city', 'name','price'])
+            .groupby(['city', 'name','price','Restaurant_information'])
             .agg(
            
                 rating = ('rating', 'count')
@@ -225,7 +225,7 @@ with col2:
 # Inject CSS with Markdown
     st.markdown(hide_table_row_index, unsafe_allow_html=True)
     most_popular1 = cityPrice_based_recommender(new_final_df1.copy(),city,price)
-    mostPopular1 = most_popular1.filter(['name','city','price'])
+    mostPopular1 = most_popular1.filter(['name','Restaurant_information','price'])
     st.table(mostPopular1)
 
 with col3:
@@ -241,7 +241,7 @@ with col3:
             new_final_df1
             .query('city == @city')
             .query('Rcuisine == @Rcuisine')
-            .groupby(['city', 'name','Rcuisine'])
+            .groupby(['city', 'name','Rcuisine','Restaurant_information'])
             .agg(
            
                 rating = ('rating', 'count')
@@ -259,5 +259,5 @@ with col3:
 # Inject CSS with Markdown
     st.markdown(hide_table_row_index, unsafe_allow_html=True)
     most_popular1 = cityCuisine_based_recommender(new_final_df1.copy(),city,Rcuisine)
-    mostPopular1 = most_popular1.filter(['name','city','price'])
+    mostPopular1 = most_popular1.filter(['name','Restaurant_information','price'])
     st.table(mostPopular1)
