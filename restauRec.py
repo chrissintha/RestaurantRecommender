@@ -149,6 +149,6 @@ with col5:
                .query('city == @city')
                .filter(['latitude','longitude'])
             )
-      city_map1=city_map(geoplaces2.copy(),city)
-      st.map(data=city_map1, zoom=11, use_container_width=True)
+   city_map1=city_map(geoplaces2.copy(),city)
+   st.map(data=city_map1, zoom=11, use_container_width=True)
 
