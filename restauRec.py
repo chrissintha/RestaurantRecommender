@@ -317,8 +317,8 @@ hide_table_row_index = """
     # Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 st.write(name)
-most_popular_item = item_based_recommender(newdf1,name)
 st.write("Beacuse you liked "+ name +" you may also like :")
+most_popular_item = item_based_recommender(newdf1,name)
 st.table(most_popular_item)
 
 
