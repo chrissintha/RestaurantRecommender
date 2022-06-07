@@ -90,13 +90,13 @@ def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: flo
         .query('rating_mean >= @min_n_ratings')
         .head(5)
         )
-  hide_table_row_index = """
-        <style>
-        tbody th {display:none}
-        .blank {display:none}
-        </style>
-        """
-    # Inject CSS with Markdown
+ hide_table_row_index = """
+       <style>
+       tbody th {display:none}
+       .blank {display:none}
+       </style>
+       """
+# Inject CSS with Markdown
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 most_popular = popularity_based_recommender(new_final_df1.copy(),1.7)
 mostPopular = most_popular.filter(['name','Restaurant_information','Additional_information'])
