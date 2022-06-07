@@ -265,7 +265,7 @@ with col3:
 
 newdf_m= (
     new_final_df1
-    .filter(['userID', 'name', 'city','rating'])
+    .filter(['userID', 'name', 'city','rating','Additional_information'])
     .groupby(['userID'])
     .head(5))
 (newdf_m
@@ -277,12 +277,12 @@ newdf_m= (
     .reset_index()
     .sort_values('mean_rating', ascending=False))
 newdf1 = newdf_m.drop_duplicates()
-newdf1.pivot(index='userID', columns='name', values='rating')
+newdf1.pivot(index='userID', columns=('name','Additional_information'), values='rating')
 def get_sparse_matrix(newdf1: pd.DataFrame): 
 
     return(
     newdf1
-        .pivot(index='userID', columns='name', values='rating')
+        .pivot(index='userID', columns=('name','Additional_information'), values='rating')
     )
 
 # py function item based recommender
@@ -301,6 +301,7 @@ def item_based_recommender(dense_matrix: pd.DataFrame, name: str, n: int=5): # n
     sparse_matrix
         .corrwith(sparse_matrix[name])
         .sort_values(ascending=False)
+        .groupby(['Restaurant_information'])
         .index
         .to_list()[1:n+1]
     )
@@ -346,9 +347,11 @@ most_popular = get_user_prefered_item(newdf1,userID)
 st.write("Restaurants you like : ")
 st.table(most_popular)
 
-st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
+#st.write("Beacuse you enjoyed "+ most_popular[0] +" you may also like :")
+st.write("Recommended for you:")
 pref_item = get_user_prefered_item(newdf1, userID)
 res_preferred = item_based_recommender(newdf1, pref_item[0])
-for i in res_preferred:
-    if pref_item[0] != i:
-        st.write( i+", ", end=" ")
+st.table(res_preferred)
+#for i in res_preferred:
+ #   if pref_item[0] != i:
+  #      st.write( i+", ", end=" ")
