@@ -60,5 +60,46 @@ st.write("""
 ### Best restaurants 
  
 """)
+ final_df["city"] = final_df["city"].map(lambda x: x.lower())
+final_df['city'].replace(['?'],final_df['city'].mode(), inplace=True)
+final_df['url'].replace(['?'],'No Details', inplace=True)
+final_df['address'].replace(['?'],'No Details', inplace=True)
+final_df['days'].replace(['?'],'No Details', inplace=True)
+final_df['hours'].replace(['?'],'No Details', inplace=True)
+final_df['Rcuisine'].replace(['?'],final_df['Rcuisine'].mode(), inplace=True)
+final_df['price'].replace(['?'],final_df['price'].mode(), inplace=True)
+final_df['Rpayment'].replace(['?'],final_df['Rpayment'].mode(), inplace=True)
+final_df['parking_lot'].replace(['?'],final_df['parking_lot'].mode(), inplace=True)
+final_df['Restaurant_information'] ='Address: ' +final_df['address']+ ', City: ' + final_df['city']+', Cuisine: ' +final_df['Rcuisine']
+final_df['Additional_information'] =' Price: ' + final_df['price']+ ', Payment Method: ' + final_df['Rpayment']+', Parking_lot :'+final_df['parking_lot']+', days_open : '+final_df['days']+' , Hours : '+final_df['hours']
+new_final_df= final_df.drop_duplicates()
+new_final_df1= new_final_df.drop_duplicates(subset=['Restaurant_information'])
+
+
+def popularity_based_recommender(new_final_df1: pd.DataFrame, min_n_ratings: float):
     
+    return (
+        new_final_df1
+        .groupby(['Additional_information', 'name',  'Restaurant_information'])
+        .agg(
+           
+            rating_mean = ('rating', 'mean'),
+            rating_count = ('rating', 'count')
+        )
+        .reset_index()
+        .sort_values(['rating_count'], ascending=False)
+        .query('rating_mean >= @min_n_ratings')
+        .head(5)
+        )
+  hide_table_row_index = """
+        <style>
+        tbody th {display:none}
+        .blank {display:none}
+        </style>
+        """
+    # Inject CSS with Markdown
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
+most_popular = popularity_based_recommender(new_final_df1.copy(),1.7)
+mostPopular = most_popular.filter(['name','Restaurant_information','Additional_information'])
+st.table(mostPopular)
 
