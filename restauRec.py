@@ -393,4 +393,4 @@ hide_table_row_index = """
 st.markdown(hide_table_row_index, unsafe_allow_html=True)
 recommened_user = get_user_recommendation(user_final,userID)
 st.write("Recommended Restaurants  : ")
-st.write(recommened_user)
+st.table(recommened_user)
