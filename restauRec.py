@@ -52,6 +52,9 @@ from PIL import Image
 image = Image.open('image_restaurant.jpg')
 
 st.image(image)
+geo_data["city"] = geo_data["city"].map(lambda x: x.lower())
+geo_data["city"].replace({"s.l.p": "san luis potosi", "s.l.p.": "san luis potosi","san luis potos": "san luis potosi","san luis potosi ": "san luis potosi"}, inplace=True)
+geo_data["city"].replace({"victoria": "victoria", "cd victoria ": "victoria","ciudad victoria": "victoria","cd. victoria ": "victoria","cd victoria": "victoria","cuidad victoria": "victoria","cd. victoria": "victoria"}, inplace=True)
 
 
 geo_data = geoplaces2.filter(['latitude','longitude'])
